@@ -8,9 +8,7 @@ const Dashboard = () => {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-[#CAD3C8]">
-        <div className="p-6 pb-0 text-2xl font-bold text-gray-800">
-          Logo
-        </div>
+        <div className="p-6 pb-0 text-2xl font-bold text-gray-800">Logo</div>
         <nav className="mt-6">
           <a
             href="#"
@@ -49,7 +47,9 @@ const Dashboard = () => {
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-[#CAD3C8] py-4 px-6 flex justify-between items-center">
-          <h1 className="text-xl font-semibold text-gray-800">Welcome, {user?.name}</h1>
+          <h1 className="text-xl font-semibold text-gray-800">
+            Welcome, {user?.name}
+          </h1>
           <div className="flex items-center gap-4">
             <img
               src="https://placehold.co/20x20"
