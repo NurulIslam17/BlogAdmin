@@ -5,6 +5,8 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import { useContext } from "react";
 import { AuthContext } from "./contex/AuthContext";
+import Category from "./pages/category/Category";
+import Layout from "./components/layout/Layout";
 
 function App() {
   const { token } = useContext(AuthContext);
@@ -15,9 +17,15 @@ function App() {
         element={!token ? <Login /> : <Navigate to="/dashboard" />}
       />
       <Route
-        path="/dashboard"
-        element={token ? <Dashboard /> : <Navigate to="/login" />}
+        path="/register"
+        element={!token ? <Register /> : <Navigate to="/dashboard" />}
       />
+
+      {/* Protected Routes with Layout */}
+      <Route path="/" element={token ? <Layout /> : <Navigate to="/login" />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="category" element={<Category />} />
+      </Route>
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
