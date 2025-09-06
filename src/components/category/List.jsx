@@ -1,34 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import GetAllCategory from "../../services/CategoryService";
 
 const List = () => {
-  const [categories, setCategories] = useState([
-    { id: 1, name: "Electronics", description: "Gadgets and devices" },
-    { id: 2, name: "Clothing", description: "Apparel and fashion" },
-    { id: 3, name: "Books", description: "Fiction and non-fiction" },
-    { id: 4, name: "Furniture", description: "Home and office furniture" },
-    { id: 5, name: "Toys", description: "Kids toys and games" },
-    { id: 6, name: "Groceries", description: "Daily essentials" },
-    { id: 7, name: "Shoes", description: "Footwear for all" },
-    { id: 8, name: "Sports", description: "Sports gear and accessories" },
-    { id: 4, name: "Furniture", description: "Home and office furniture" },
-    { id: 5, name: "Toys", description: "Kids toys and games" },
-    { id: 6, name: "Groceries", description: "Daily essentials" },
-    { id: 7, name: "Shoes", description: "Footwear for all" },
-    { id: 8, name: "Sports", description: "Sports gear and accessories" },
-    { id: 4, name: "Furniture", description: "Home and office furniture" },
-    { id: 5, name: "Toys", description: "Kids toys and games" },
-    { id: 6, name: "Groceries", description: "Daily essentials" },
-    { id: 7, name: "Shoes", description: "Footwear for all" },
-    { id: 8, name: "Sports", description: "Sports gear and accessories" },
-    { id: 4, name: "Furniture", description: "Home and office furniture" },
-    { id: 5, name: "Toys", description: "Kids toys and games" },
-    { id: 6, name: "Groceries", description: "Daily essentials" },
-    { id: 7, name: "Shoes", description: "Footwear for all" },
-    { id: 8, name: "Sports", description: "Sports gear and accessories" },
-  ]);
-
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 9;
 
   const handleEdit = (id) => {
     alert(`Edit category with ID: ${id}`);
@@ -51,18 +28,24 @@ const List = () => {
     }
   };
 
+  useEffect(() => {
+    GetAllCategory()
+      .then((response) => setCategories(response))
+      .catch((error) => console.log(error));
+  });
+
   return (
-    <div className="p-6 bg-white shadow rounded-lg">
+    <div className="p-4 bg-white shadow rounded-lg">
       <h2 className="text-2xl font-semibold mb-4">Category List</h2>
 
-      <div className="h-[400px] overflow-y-auto bg-red-200 relative">
+      <div className="h-[460px] overflow-y-auto relative">
         <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-gray-100 text-left">
-              <th className="py-3 px-4 border-b">ID</th>
-              <th className="py-3 px-4 border-b">Name</th>
-              <th className="py-3 px-4 border-b">Description</th>
-              <th className="py-3 px-4 border-b text-center">Actions</th>
+              <th className="py-1 px-4 border-b">ID</th>
+              <th className="py-1 px-4 border-b">Name</th>
+              <th className="py-1 px-4 border-b">Description</th>
+              <th className="py-1 px-4 border-b text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -71,10 +54,10 @@ const List = () => {
                 key={category.id}
                 className="hover:bg-gray-50 transition duration-200"
               >
-                <td className="py-3 px-4 border-b">{category.id}</td>
-                <td className="py-3 px-4 border-b">{category.name}</td>
-                <td className="py-3 px-4 border-b">{category.description}</td>
-                <td className="py-3 px-4 border-b text-center">
+                <td className="py-1 px-4 border-b">{category.id}</td>
+                <td className="py-1 px-4 border-b">{category.name}</td>
+                <td className="py-1 px-4 border-b">{category.description}</td>
+                <td className="py-1 px-4 border-b text-center">
                   <button
                     onClick={() => handleEdit(category.id)}
                     className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600 transition"
@@ -104,47 +87,45 @@ const List = () => {
           </tbody>
         </table>
 
-        <div className="flex justify-between items-center mt-4 absolute bottom-0">
-          <p className="text-gray-600">
-            Page {currentPage} of {totalPages}
-          </p>
-          <div className="flex space-x-2">
+        <p className="text-gray-600 absolute bottom-0 left-2">
+          Page {currentPage} of {totalPages}
+        </p>
+        <div className="flex space-x-2 absolute bottom-0 right-0">
+          <button
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded border ${
+              currentPage === 1
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-gray-100 hover:bg-gray-200"
+            }`}
+          >
+            Prev
+          </button>
+          {[...Array(totalPages)].map((_, index) => (
             <button
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
+              key={index}
+              onClick={() => goToPage(index + 1)}
               className={`px-3 py-1 rounded border ${
-                currentPage === 1
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                currentPage === index + 1
+                  ? "bg-blue-500 text-white"
                   : "bg-gray-100 hover:bg-gray-200"
               }`}
             >
-              Prev
+              {index + 1}
             </button>
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToPage(index + 1)}
-                className={`px-3 py-1 rounded border ${
-                  currentPage === index + 1
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 hover:bg-gray-200"
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-            <button
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className={`px-3 py-1 rounded border ${
-                currentPage === totalPages
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-gray-100 hover:bg-gray-200"
-              }`}
-            >
-              Next
-            </button>
-          </div>
+          ))}
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded border ${
+              currentPage === totalPages
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-gray-100 hover:bg-gray-200"
+            }`}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
