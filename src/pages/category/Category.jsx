@@ -1,12 +1,12 @@
-import React from 'react'
-import List from '../../components/category/List'
+import React from "react";
+import List from "../../components/category/List";
 
 const Category = () => {
   return (
     <>
       <List />
     </>
-  )
-}
+  );
+};
 
-export default Category
+export default Category;

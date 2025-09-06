@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
-import GetAllCategory from "../../services/CategoryService";
+import { useEffect, useState } from "react";
+import { GetAllCategory } from "../../services/CategoryService";
+import Add from "./Add.Jsx";
 
 const List = () => {
   const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
@@ -29,52 +32,74 @@ const List = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     GetAllCategory()
-      .then((response) => setCategories(response))
-      .catch((error) => console.log(error));
-  });
+      .then((response) => {
+        setCategories(response);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <div className="p-4 bg-white shadow rounded-lg">
-      <h2 className="text-2xl font-semibold mb-4">Category List</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-semibold mb-4">Category List</h2>
+        <button
+          onClick={() => setIsAddModalOpen(!isAddModalOpen)}
+          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+        >
+          Create
+        </button>
+      </div>
 
       <div className="h-[460px] overflow-y-auto relative">
         <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-gray-100 text-left">
               <th className="py-1 px-4 border-b">ID</th>
-              <th className="py-1 px-4 border-b">Name</th>
-              <th className="py-1 px-4 border-b">Description</th>
-              <th className="py-1 px-4 border-b text-center">Actions</th>
+              <th className="py-1 px-4 border-b text-center">Name</th>
+              <th className="py-1 px-4 border-b text-center max-w-[50px]">
+                Actions
+              </th>
             </tr>
           </thead>
+
           <tbody>
-            {currentItems.map((category) => (
-              <tr
-                key={category.id}
-                className="hover:bg-gray-50 transition duration-200"
-              >
-                <td className="py-1 px-4 border-b">{category.id}</td>
-                <td className="py-1 px-4 border-b">{category.name}</td>
-                <td className="py-1 px-4 border-b">{category.description}</td>
-                <td className="py-1 px-4 border-b text-center">
-                  <button
-                    onClick={() => handleEdit(category.id)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600 transition"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(category.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-                  >
-                    Delete
-                  </button>
+            {isLoading ? (
+              <tr>
+                <td colSpan="4" className="py-2 px-4 text-center">
+                  Loading...
                 </td>
               </tr>
-            ))}
-
-            {currentItems.length === 0 && (
+            ) : currentItems.length > 0 ? (
+              currentItems.map((category) => (
+                <tr
+                  key={category.id}
+                  className="hover:bg-gray-50 transition duration-200"
+                >
+                  <td className="py-1 px-4 border-b ">{category.id}</td>
+                  <td className="py-1 px-4 border-b text-center">
+                    {category.name}
+                  </td>
+                  <td className="py-1 px-4 border-b text-center max-w-[50px]">
+                    <button
+                      onClick={() => handleEdit(category.id)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600 transition"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(category.id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
                 <td
                   colSpan="4"
@@ -128,6 +153,9 @@ const List = () => {
           </button>
         </div>
       </div>
+      {isAddModalOpen && (
+        <Add isOpen={isAddModalOpen} setIsOpen={setIsAddModalOpen} />
+      )}
     </div>
   );
 };
