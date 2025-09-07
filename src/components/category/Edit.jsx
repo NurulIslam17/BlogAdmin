@@ -1,25 +1,25 @@
-import { useState } from "react";
 import Modal from "../common/Modal";
-import { CreateCategory } from "../../services/CategoryService";
+import { UpdateCategoryById } from "../../services/CategoryService";
 import { useForm } from "react-hook-form";
 
-const Add = ({isOpen, setIsOpen }) => {
+const Edit = ({ editData, isOpen, setIsOpen }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset,
   } = useForm();
-
+  setValue("name", editData.name);
   const onSubmit = (data) => {
-    CreateCategory(data);
+    UpdateCategoryById(editData.id, data);
     setIsOpen(false);
     reset();
   };
 
   return (
     <div>
-      <Modal title="Add Category" isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Modal title="Edit Category" isOpen={isOpen} setIsOpen={setIsOpen}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block mb-1 text-gray-700">
@@ -45,7 +45,7 @@ const Add = ({isOpen, setIsOpen }) => {
               type="submit"
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
             >
-              Save
+              Update
             </button>
           </div>
         </form>
@@ -54,4 +54,4 @@ const Add = ({isOpen, setIsOpen }) => {
   );
 };
 
-export default Add;
+export default Edit;
