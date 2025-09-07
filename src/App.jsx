@@ -1,12 +1,14 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import "./App.css";
-import Dashboard from "./pages/dashboard/Dashboard";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
 import { useContext } from "react";
 import { AuthContext } from "./contex/AuthContext";
-import Category from "./pages/category/Category";
+import "./App.css";
+import Swal from 'sweetalert2'
+
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import Dashboard from "./pages/dashboard/Dashboard";
 import Layout from "./components/layout/Layout";
+import Category from "./pages/category/Category";
 
 function App() {
   const { token } = useContext(AuthContext);

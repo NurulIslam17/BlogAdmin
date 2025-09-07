@@ -1,25 +1,47 @@
 import { useEffect, useState } from "react";
-import { GetAllCategory } from "../../services/CategoryService";
+import {
+  deleteCategoryById,
+  GetAllCategory,
+} from "../../services/CategoryService";
 import Add from "./Add.Jsx";
+import { toast } from "react-toastify";
+import Loader from "../common/Loader";
+import Edit from "./Edit";
 
 const List = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editData, setEditData] = useState({});
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
-  const handleEdit = (id) => {
-    alert(`Edit category with ID: ${id}`);
+  const fetchCategories = () => {
+    setIsLoading(true);
+    GetAllCategory()
+      .then((response) => {
+        setCategories(response);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.response?.data?.message || error.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      setCategories(categories.filter((cat) => cat.id !== id));
-    }
+    deleteCategoryById(id).then(() => fetchCategories());
   };
 
+  const handleEdit = (id) => {
+    setIsEditModalOpen(true);
+    setEditData(categories.find((category) => category.id === id));
+  };
+
+  if (!categories) return;
   // Pagination logic
   const totalPages = Math.ceil(categories.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -32,14 +54,7 @@ const List = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    GetAllCategory()
-      .then((response) => {
-        setCategories(response);
-        setIsLoading(false);
-      })
-      .catch((error) => console.log(error))
-      .finally(() => setIsLoading(false));
+    fetchCategories();
   }, []);
 
   return (
@@ -69,17 +84,17 @@ const List = () => {
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan="4" className="py-2 px-4 text-center">
-                  Loading...
+                <td colSpan="4" className="text-center py-4">
+                  <Loader />
                 </td>
               </tr>
             ) : currentItems.length > 0 ? (
-              currentItems.map((category) => (
+              currentItems.map((category, index) => (
                 <tr
-                  key={category.id}
+                  key={index}
                   className="hover:bg-gray-50 transition duration-200"
                 >
-                  <td className="py-1 px-4 border-b ">{category.id}</td>
+                  <td className="py-1 px-4 border-b ">{index + 1}</td>
                   <td className="py-1 px-4 border-b text-center">
                     {category.name}
                   </td>
@@ -155,6 +170,13 @@ const List = () => {
       </div>
       {isAddModalOpen && (
         <Add isOpen={isAddModalOpen} setIsOpen={setIsAddModalOpen} />
+      )}
+      {isEditModalOpen && (
+        <Edit
+          isOpen={isEditModalOpen}
+          setIsOpen={setIsEditModalOpen}
+          editData={editData}
+        />
       )}
     </div>
   );

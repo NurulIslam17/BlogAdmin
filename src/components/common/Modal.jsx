@@ -2,7 +2,7 @@ import React from "react";
 
 const Modal = ({ title = "Title", isOpen, setIsOpen, children }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-opacity-40 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-opacity-40 z-50 transition duration-700 ease-in-out">
       <div className="bg-gray-200 border border-gray-300 rounded-2xl shadow-lg w-full max-w-lg p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
