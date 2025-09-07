@@ -28,6 +28,15 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink
+            to="/post"
+            className={({ isActive }) =>
+              `${linkClasses} ${isActive ? "bg-gray-200 " : ""}`
+            }
+          >
+            Post
+          </NavLink>
+
+          <NavLink
             to="/Settings"
             className={({ isActive }) =>
               `${linkClasses} ${isActive ? "bg-gray-200 " : ""}`

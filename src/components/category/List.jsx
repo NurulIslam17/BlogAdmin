@@ -16,7 +16,7 @@ const List = () => {
   const [editData, setEditData] = useState({});
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+  const itemsPerPage = 10;
 
   const fetchCategories = () => {
     setIsLoading(true);
@@ -58,7 +58,7 @@ const List = () => {
   }, []);
 
   return (
-    <div className="p-4 bg-white shadow rounded-lg">
+    <div className="p-4 pt-0 bg-white shadow rounded-lg">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold mb-4">Category List</h2>
         <button
@@ -69,7 +69,7 @@ const List = () => {
         </button>
       </div>
 
-      <div className="h-[460px] overflow-y-auto relative">
+      <div className="h-[490px] overflow-y-auto relative">
         <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-gray-100 text-left">
