@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { FaRegListAlt } from "react-icons/fa";
+import { FiImage } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 
 const Add = () => {
@@ -31,7 +32,7 @@ const Add = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
           <div>
             <label className="block mb-1 text-gray-700">
               Title <span className="text-red-500">*</span>
@@ -94,24 +95,48 @@ const Add = () => {
               </p>
             )}
           </div>
+
+          <div>
+            <label htmlFor="image" className="block mb-1 text-gray-700">
+              Image <span className="text-red-500">*</span>
+            </label>
+            <div className="flex items-center border rounded-md p-2 gap-2">
+              <FiImage className="text-gray-500 text-xl" />
+              <input
+                id="image"
+                type="file"
+                accept="image/*"
+                {...register("file", {
+                  required: "Image is required",
+                })}
+                className="w-full border-none outline-none"
+              />
+            </div>
+            {errors.image && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.image.message}
+              </p>
+            )}
+          </div>
         </div>
 
+        {/* Description */}
         <div>
           <label className="block mb-1 text-gray-700">
-            Content <span className="text-red-500">*</span>
+            Description <span className="text-red-500">*</span>
           </label>
           <textarea
-            {...register("content", {
-              required: "Content is required",
+            {...register("description", {
+              required: "Description is required",
             })}
             className={`w-full h-[250px] border rounded-md p-2 ${
               errors.content ? "border-red-500" : "border-gray-300"
             }`}
-            placeholder="Enter content"
+            placeholder="Enter description"
           ></textarea>
-          {errors.content && (
+          {errors.description && (
             <p className="text-red-500 text-sm mt-1">
-              {errors.content.message}
+              {errors.description.message}
             </p>
           )}
         </div>
