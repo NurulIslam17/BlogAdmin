@@ -4,6 +4,7 @@ import Loader from "../common/Loader";
 import { MdEditNotifications } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const List = () => {
   const [posts, setPosts] = useState([]);
@@ -42,9 +43,12 @@ const List = () => {
     <div className="p-4 pt-0 bg-white shadow rounded-lg">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold mb-4">Post List</h2>
-        <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition">
+        <Link
+          to={"/post/add"}
+          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+        >
           Create
-        </button>
+        </Link>
       </div>
 
       <div className="h-[490px] overflow-y-auto relative">
