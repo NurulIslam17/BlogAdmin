@@ -2,9 +2,14 @@ import { useForm } from "react-hook-form";
 import { FaRegListAlt } from "react-icons/fa";
 import { FiImage } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import { CreatePost } from "../../services/PostService";
+import { useEffect, useState } from "react";
+import { GetAllCategory } from "../../services/CategoryService";
 
 const Add = () => {
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -12,11 +17,26 @@ const Add = () => {
     reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    navigate("/post");
-    reset();
+  const fetchCategories = () => {
+    GetAllCategory()
+      .then((response) => {
+        setCategories(response);
+      })
+      .catch((error) => console.log(error));
   };
+
+  const onSubmit = (data) => {
+    CreatePost(data)
+      .then(() => {
+        navigate("/post");
+        reset();
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <div className="border border-gray-300 rounded-2xl shadow-lg px-6 py-2">
@@ -58,16 +78,25 @@ const Add = () => {
             <label className="block mb-1 text-gray-700">
               Category <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
+            <select
               {...register("category_id", {
                 required: "Category is required",
               })}
               className={`w-full border rounded-md p-2 ${
                 errors.category_id ? "border-red-500" : "border-gray-300"
               }`}
-              placeholder="Enter category name"
-            />
+            >
+              <option value="">Select a category</option>
+              {categories && categories.length > 0 ? (
+                categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No categories available</option>
+              )}
+            </select>
             {errors.category_id && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.category_id.message}
