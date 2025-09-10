@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 const List = () => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const REACT_APP_BASE_URL = "http://localhost:8080/api/";
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
