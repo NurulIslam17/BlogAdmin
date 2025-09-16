@@ -14,6 +14,8 @@ import Add from "./pages/post/Add";
 
 function App() {
   const { token } = useContext(AuthContext);
+
+  console.log(token);
   return (
     <Routes>
       <Route
