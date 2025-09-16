@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { createContext, useState, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +13,24 @@ export const AuthProvider = ({ children }) => {
     () => localStorage.getItem("token") || null
   );
 
+  // Function to check if token is expired
+  const isTokenExpired = (token) => {
+    if (!token) return true;
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000; // Current time in seconds
+      return decoded.exp < currentTime; // Returns true if token is expired
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return true; // Treat invalid tokens as expired
+    }
+  };
   const login = (userData, tokenData) => {
+    if (isTokenExpired(tokenData)) {
+      console.warn("Token is already expired");
+      navigate("/login");
+      return;
+    }
     setUser(userData);
     setToken(tokenData);
     localStorage.setItem("user", JSON.stringify(userData));
@@ -29,8 +47,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
+    if (!token || isTokenExpired(token)) {
+      logout(); // Logout if no token or token is expired
     }
   }, [token]);
 
