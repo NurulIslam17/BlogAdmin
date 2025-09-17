@@ -26,6 +26,7 @@ const Add = () => {
   };
 
   const onSubmit = (data) => {
+    console.log(data);
     CreatePost(data)
       .then(() => {
         navigate("/post");
@@ -141,10 +142,8 @@ const Add = () => {
                 className="w-full border-none outline-none"
               />
             </div>
-            {errors.image && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.image.message}
-              </p>
+            {errors.file && (
+              <p className="text-red-500 text-sm mt-1">{errors.file.message}</p>
             )}
           </div>
         </div>
