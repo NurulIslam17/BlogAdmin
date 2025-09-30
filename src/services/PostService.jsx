@@ -13,7 +13,8 @@ export async function GetAllPost() {
 
 export async function CreatePost(data) {
   try {
-    const response = await appApi.post("post/save", { data });
+    console.log(data);
+    const response = await appApi.post("post/save", data);
     console.log(response);
     toast.success(response?.data);
     return response;

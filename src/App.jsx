@@ -1,16 +1,16 @@
-import { Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "./contex/AuthContext";
-import "./App.css";
-import Swal from "sweetalert2";
+import { Routes, Route, Navigate } from "react-router-dom";
 
+import "./App.css";
+import { AuthContext } from "./contex/AuthContext";
+
+import Add from "./pages/post/Add";
+import Post from "./pages/post/Post";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Dashboard from "./pages/dashboard/Dashboard";
 import Layout from "./components/layout/Layout";
 import Category from "./pages/category/Category";
-import Post from "./pages/post/Post";
-import Add from "./pages/post/Add";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
   const { token } = useContext(AuthContext);

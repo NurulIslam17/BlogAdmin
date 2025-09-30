@@ -26,7 +26,6 @@ const Add = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     CreatePost(data)
       .then(() => {
         navigate("/post");
@@ -130,8 +129,8 @@ const Add = () => {
             <label htmlFor="image" className="block mb-1 text-gray-700">
               Image <span className="text-red-500">*</span>
             </label>
-            <div className="flex items-center border rounded-md p-2 gap-2">
-              <FiImage className="text-gray-500 text-xl" />
+            <div className="flex items-center border rounded-md p-2 gap-2 hover:cursor-pointer">
+              <FiImage className="text-gray-500 text-xl hover:cursor-pointer" />
               <input
                 id="image"
                 type="file"
@@ -139,7 +138,7 @@ const Add = () => {
                 {...register("file", {
                   required: "Image is required",
                 })}
-                className="w-full border-none outline-none"
+                className="w-full border-none outline-none hover:cursor-pointer"
               />
             </div>
             {errors.file && (
