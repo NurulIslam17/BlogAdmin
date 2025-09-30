@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 const List = () => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const REACT_APP_BASE_URL = "http://localhost:8080/api/";
 
+  const REACT_APP_BASE_URL = "http://localhost:8080";
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -88,7 +88,7 @@ const List = () => {
                   <td className="py-1 px-1 border-b">
                     <div className="flex justify-center">
                       <img
-                        src="https://placehold.co/30x30"
+                        src={`${REACT_APP_BASE_URL}/uploads/${post?.filePath}`}
                         className="rounded-full"
                         alt=""
                         srcSet=""
