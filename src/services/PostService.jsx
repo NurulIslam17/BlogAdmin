@@ -4,18 +4,18 @@ import appApi from "../utils/dataAxios";
 export async function GetAllPost() {
   try {
     const response = await appApi.get("post");
-    return response.data;
+    return response.data?.data;
   } catch (error) {
-    toast.error(error.response?.data?.message || error.message);
-    return null;
+    console.log(error.message);
+    return [];
   }
 }
 
 export async function CreatePost(data) {
   try {
     console.log(data);
+    // data should be FormData here
     const response = await appApi.post("post/save", data);
-    console.log(response);
     toast.success(response?.data);
     return response;
   } catch (error) {

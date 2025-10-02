@@ -14,7 +14,6 @@ const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  if (!posts) return;
   const totalPages = Math.ceil(posts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = posts.slice(startIndex, startIndex + itemsPerPage);
@@ -33,6 +32,7 @@ const List = () => {
         setIsLoading(false);
       })
       .catch((error) => {
+        console.log("Error");
         console.log(error);
       });
   };
@@ -41,7 +41,7 @@ const List = () => {
     fetchPost();
   }, []);
   return (
-    <div className="p-4 pt-0 bg-white shadow rounded-lg">
+    <div className="p-4 pt-0 bg-white relative shadow rounded-lg">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold mb-4">Post List</h2>
         <Link
@@ -52,8 +52,8 @@ const List = () => {
         </Link>
       </div>
 
-      <div className="h-[490px] overflow-y-auto relative">
-        <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
+      <div className="h-[490px] relative overflow-y-auto">
+        <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden relative">
           <thead>
             <tr className="bg-gray-100 text-left">
               <th className="py-1 px-4 text-center border-b">SL</th>
@@ -69,85 +69,92 @@ const List = () => {
             </tr>
           </thead>
 
-          <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan="4" className="text-center py-4">
-                  <Loader />
-                </td>
-              </tr>
-            ) : currentItems.length > 0 ? (
-              currentItems.map((post, index) => (
-                <tr
-                  key={index}
-                  className="hover:bg-gray-50 transition duration-200"
-                >
-                  <td className="py-1 px-1 text-center border-b ">
-                    {index + 1}
-                  </td>
-                  <td className="py-1 px-1 border-b">
-                    <div className="flex justify-center">
-                      <img
-                        src={`${REACT_APP_BASE_URL}/uploads/${post?.filePath}`}
-                        className="rounded-full"
-                        alt=""
-                        srcSet=""
-                      />
-                    </div>
-                  </td>
-                  <td className="py-1 px-1 border-b ">{post?.title}</td>
-                  <td className="py-1 px-1 border-b ">{post?.author}</td>
-                  <td className="py-1 px-1 border-b ">{post?.categoryName}</td>
-                  <td className="py-1 px-1 border-b ">
-                    {post?.description.slice(0, 50)}...
-                  </td>
-                  <td className="py-1 px-1 border-b text-center">
-                    <span
-                      className={`px-2 py-1 rounded font-medium ${
-                        post?.status === "PENDING"
-                          ? "bg-yellow-500 text-white"
-                          : ""
-                      } ${
-                        post?.status === "PUBLISHED"
-                          ? "bg-green-500 text-white"
-                          : ""
-                      } ${
-                        post?.status === "UNPUBLISHED"
-                          ? "bg-red-500 text-white"
-                          : ""
-                      }`}
-                    >
-                      {post?.status}
-                    </span>
-                  </td>
-                  <td className="py-1 px-1 border-b text-center">
-                    <button
-                      onClick={() => handleEdit(post.id)}
-                      className="bg-blue-500 text-white px-2 py-1 rounded mr-2 hover:bg-blue-600 transition"
-                    >
-                      <FaRegEdit />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(category.id)}
-                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition"
-                    >
-                      <FaRegTrashCan />
-                    </button>
+          {posts?.length > 0 && (
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    <Loader />
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="4"
-                  className="text-center py-4 text-gray-500 italic"
-                >
-                  No categories found.
-                </td>
-              </tr>
-            )}
-          </tbody>
+              ) : currentItems.length > 0 ? (
+                currentItems.map((post, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-50 transition duration-200"
+                  >
+                    <td className="py-1 px-1 text-center border-b ">
+                      {index + 1}
+                    </td>
+                    <td className="py-1 px-1 border-b">
+                      <div className="flex justify-center">
+                        <img src="https://placehold.co/40x40" className="rounded-full" alt="" srcSet="" />
+                      </div>
+                    </td>
+                    <td className="py-1 px-1 border-b ">{post?.title}</td>
+                    <td className="py-1 px-1 border-b ">{post?.author}</td>
+                    <td className="py-1 px-1 border-b ">
+                      {post?.categoryName}
+                    </td>
+                    <td className="py-1 px-1 border-b ">
+                      {post?.description.slice(0, 50)}...
+                    </td>
+                    <td className="py-1 px-1 border-b text-center">
+                      <span
+                        className={`px-2 py-1 rounded font-medium ${
+                          post?.status === "PENDING"
+                            ? "bg-yellow-500 text-white"
+                            : ""
+                        } ${
+                          post?.status === "PUBLISHED"
+                            ? "bg-green-500 text-white"
+                            : ""
+                        } ${
+                          post?.status === "UNPUBLISHED"
+                            ? "bg-red-500 text-white"
+                            : ""
+                        }`}
+                      >
+                        {post?.status}
+                      </span>
+                    </td>
+                    <td className="py-1 px-1 border-b text-center">
+                      <button
+                        onClick={() => handleEdit(post.id)}
+                        className="bg-blue-500 text-white px-2 py-1 rounded mr-2 hover:bg-blue-600 transition"
+                      >
+                        <FaRegEdit />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(category.id)}
+                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition"
+                      >
+                        <FaRegTrashCan />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="4"
+                    className="text-center py-4 text-gray-500 italic"
+                  >
+                    No categories found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          )}
         </table>
+
+        {posts?.length === 0 && !isLoading && (
+          <div className="">
+            <p className="text-center py-4 text-gray-500 italic">
+              No categories found.
+            </p>
+          </div>
+        )}
 
         <p className="text-gray-600 absolute bottom-0 left-2">
           Page {currentPage} of {totalPages}

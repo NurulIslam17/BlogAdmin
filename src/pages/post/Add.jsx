@@ -26,7 +26,11 @@ const Add = () => {
   };
 
   const onSubmit = (data) => {
-    CreatePost(data)
+    const postData = {
+      ...data,
+      file: data.file?.[0] || data.file,
+    };
+    CreatePost(postData)
       .then(() => {
         navigate("/post");
         reset();
