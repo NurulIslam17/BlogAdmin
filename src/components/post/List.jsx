@@ -52,7 +52,7 @@ const List = () => {
         </Link>
       </div>
 
-      <div className="h-[490px] relative overflow-y-auto">
+      <div className="h-[580px] relative overflow-y-auto">
         <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden relative">
           <thead>
             <tr className="bg-gray-100 text-left">

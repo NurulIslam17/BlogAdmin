@@ -13,9 +13,11 @@ export async function GetAllPost() {
 
 export async function CreatePost(data) {
   try {
-    console.log(data);
-    // data should be FormData here
-    const response = await appApi.post("post/save", data);
+    const response = await appApi.post("post/save", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     toast.success(response?.data);
     return response;
   } catch (error) {
