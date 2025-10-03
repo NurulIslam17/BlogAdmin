@@ -16,7 +16,6 @@ export async function GetAllCategory() {
 export function CreateCategory(data) {
   try {
     const response = appApi.post("categories/save", data);
-    console.log(response);
     toast.success("Category created successfully!");
   } catch (error) {
     const errorMessage = error.response?.data?.message || error.message;
