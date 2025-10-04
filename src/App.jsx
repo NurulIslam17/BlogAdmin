@@ -11,6 +11,7 @@ import Register from "./pages/auth/Register";
 import Layout from "./components/layout/Layout";
 import Category from "./pages/category/Category";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Details from "./pages/post/Details";
 
 function App() {
   const { token } = useContext(AuthContext);
@@ -32,6 +33,7 @@ function App() {
         <Route path="post">
           <Route index element={<Post />} />
           <Route path="add" element={<Add />} />
+          <Route path=":id" element={<Details />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" />} />

@@ -26,21 +26,7 @@ const Add = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
-    console.log(data.file?.[0]);
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("author", data.author);
-    formData.append("status", data.status);
-    formData.append("category_id", data.category_id);
-    formData.append("file", data.file?.[0]);
-    // const postData = {
-    //   ...data,
-    //   file: data.file?.[0] || data.file,
-    // };
-    console.log(formData);
-    CreatePost(formData)
+    CreatePost(data)
       .then(() => {
         navigate("/post");
         reset();

@@ -12,6 +12,7 @@ export async function GetAllPost() {
 }
 
 export async function CreatePost(data) {
+  console.log(data);
   try {
     const response = await appApi.post("post/save", data, {
       headers: {
