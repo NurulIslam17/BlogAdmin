@@ -29,8 +29,6 @@ appApi.interceptors.request.use(
     if (config.data instanceof FormData) {
       delete config.headers["Content-Type"];
     }
-
-    console.log(config);
     return config;
   },
   (error) => {

@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { GetAllPost } from "../../services/PostService";
 import Loader from "../common/Loader";
-import { MdEditNotifications } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { FaEye, FaRegTrashCan } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
 
 const List = () => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { navigate } = useNavigate();
 
   const REACT_APP_BASE_URL = "http://localhost:8080";
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,10 +89,17 @@ const List = () => {
                     </td>
                     <td className="py-1 px-1 border-b">
                       <div className="flex justify-center">
-                        <img src="https://placehold.co/40x40" className="rounded-full" alt="" srcSet="" />
+                        <img
+                          src="https://placehold.co/40x40"
+                          className="rounded-full"
+                          alt=""
+                          srcSet=""
+                        />
                       </div>
                     </td>
-                    <td className="py-1 px-1 border-b ">{post?.title}</td>
+                    <td className="py-1 px-1 border-b ">
+                      {post?.title.slice(0, 60)}...
+                    </td>
                     <td className="py-1 px-1 border-b ">{post?.author}</td>
                     <td className="py-1 px-1 border-b ">
                       {post?.categoryName}
@@ -118,18 +126,21 @@ const List = () => {
                         {post?.status}
                       </span>
                     </td>
-                    <td className="py-1 px-1 border-b text-center">
+                    <td className="py-1 px-1 border-b text-center w-[200px]">
                       <button
                         onClick={() => handleEdit(post.id)}
                         className="bg-blue-500 text-white px-2 py-1 rounded mr-2 hover:bg-blue-600 transition"
                       >
                         <FaRegEdit />
                       </button>
-                      <button
-                        onClick={() => handleDelete(category.id)}
-                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition"
-                      >
+                      <button className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">
                         <FaRegTrashCan />
+                      </button>
+                      <button className="bg-blue-300 text-white px-2 py-1 mx-2 rounded hover:bg-blue-600 transition">
+                        <Link to={`/post/${post.id}`}>
+                          {" "}
+                          <FaEye />
+                        </Link>
                       </button>
                     </td>
                   </tr>
